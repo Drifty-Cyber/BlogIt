@@ -15,6 +15,7 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: [true, 'A post must have a body'],
     },
+    images: [String],
     ratingsAverage: {
       type: Number,
       default: 4.5,
