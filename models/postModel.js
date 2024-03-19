@@ -70,4 +70,5 @@ postSchema.pre(/^find/, function (next) {
 });
 
 const Post = mongoose.model('Post', postSchema);
+
 module.exports = Post;

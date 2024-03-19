@@ -29,7 +29,7 @@ mongoose
 const port = process.env.PORT || 3000;
 
 const server = app.listen(port, () => {
-  console.log(`App running on ${port}`);
+  console.log(`App running on ${port} in ${process.env.NODE_ENV} mode`);
 });
 
 //HANDLING UNHANDLED PROMISE REJECTIONS-------------------"SAFETY NET"

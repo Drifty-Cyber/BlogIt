@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const postsRouter = require('./routes/postsRoutes');
 
 const app = express();
 
@@ -19,6 +20,9 @@ app.get('/', (req, res, next) => {
     message: 'Welcome',
   });
 });
+
+// Routes
+app.use('/api/v1/posts', postsRouter);
 
 // EXPORT APP
 module.exports = app;
