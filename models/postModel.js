@@ -55,7 +55,7 @@ postSchema.pre('save', function (next) {
 });
 
 postSchema.pre('save', function (next) {
-  this.slug = slugify(this.name, { lower: true });
+  this.slug = slugify(this.title, { lower: true });
   next();
 });
 

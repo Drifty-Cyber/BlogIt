@@ -47,12 +47,13 @@ exports.getPost = catchAsync(async (req, res, next) => {
 });
 
 exports.createPost = catchAsync(async (req, res, next) => {
+  console.log(req.body);
   const post = await Post.create(req.body);
 
   res.status(201).json({
     status: 'success',
     data: {
-      data: post,
+      post,
     },
   });
 });
