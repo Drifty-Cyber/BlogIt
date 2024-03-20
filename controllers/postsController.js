@@ -8,13 +8,14 @@ exports.getAllPosts = catchAsync(async (req, res, next) => {
 
   if (req.params.postId) filter = { post: req.params.postId };
 
-  const features = new APIFeatures(Post.find(filter), req.query())
+  const features = new APIFeatures(Post.find(filter), req.query)
     .filter()
     .sort()
     .limitFields()
     .paginate();
 
-  const posts = await features.query();
+  const posts = await features.query;
+  // console.log(features.query);
 
   if (!posts) {
     return next(new AppError('Posts unable to fetch', 404));
