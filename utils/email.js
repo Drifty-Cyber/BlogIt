@@ -5,7 +5,8 @@ const { convert } = require('html-to-text');
 module.exports = class Email {
   constructor(user, url) {
     this.to = user.email;
-    this.firstName = user.name.split(' ')[0];
+    // this.firstName = user.name.split(' ')[0];
+    this.firstName = user.username;
     this.url = url;
     this.from = `Raphael Fadimu <${process.env.EMAIL_FROM}>`;
   }
@@ -91,7 +92,7 @@ module.exports = class Email {
   }
 
   async sendWelcome() {
-    await this.send('welcome', 'Welcome to the BlogIt Family');
+    await this.send('welcome', 'Welcome to BlogIt');
   }
 
   async sendPasswordReset() {

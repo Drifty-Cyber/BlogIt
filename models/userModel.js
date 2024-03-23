@@ -7,11 +7,12 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: [true, 'Please specify a username'],
+    unique: true,
   },
   email: {
     type: String,
     required: [true, 'Please input your email'],
-    unique: true,
+    // unique: true,
     lowercase: true,
     validator: [validator.isEmail, 'Please input a valid email'],
   },
@@ -30,6 +31,15 @@ const userSchema = new mongoose.Schema({
       },
       message: 'Passwords are not the same!',
     },
+  },
+  photo: {
+    type: String,
+    default: 'default.jpg',
+  },
+  role: {
+    type: String,
+    enum: ['user', 'super-user', 'admin'],
+    default: 'user',
   },
   passwordChangedAt: Date,
   passwordResetToken: String,

@@ -5,19 +5,19 @@ const Email = require('../utils/email');
 const createSendToken = require('../utils/createSendToken');
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const newUser = {
+  const newUser = await User.create({
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     passwordChangedAt: req.body.passwordChangedAt,
-  };
+  });
 
   if (process.env.NODE_ENV === 'production') {
     const url = `${req.protocol}://${req.get('host')}/me`;
     await new Email(newUser, url).sendGmail(
       'welcome',
-      'Welcome to the PetVet Family'
+      'Welcome to the BlogIt Family'
     );
   } else if (process.env.NODE_ENV === 'development') {
     const url = `${req.protocol}://${req.get('host')}/me`;
