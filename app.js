@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
+const globalErrorHandler = require('./controllers/errorController');
 const postsRouter = require('./routes/postsRoutes');
 const userRouter = require('./routes/userRoutes');
 
@@ -48,6 +49,9 @@ app.get('/', (req, res, next) => {
 // Routes
 app.use('/api/v1/posts', postsRouter);
 app.use('/api/v1/users', userRouter);
+
+// GLOBAL ERROR HANDLER
+app.use(globalErrorHandler);
 
 // EXPORT APP
 module.exports = app;
