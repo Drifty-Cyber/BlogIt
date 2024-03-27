@@ -13,6 +13,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordChangedAt: req.body.passwordChangedAt,
   });
 
+  // SEND WELCOME EMAIL BASED ON ENVIRONMENT
   if (process.env.NODE_ENV === 'production') {
     const url = `${req.protocol}://${req.get('host')}/me`;
     await new Email(newUser, url).sendGmail(
@@ -27,4 +28,20 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   //   Create JWT and return as cookie to client
   createSendToken(newUser, 201, req, res);
+});
+
+exports.login = catchAsync(async (req, res, next) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return next(new AppError('Please provide a username and password', 400));
+  }
+
+  const user = await User.findOne({ username }).select('+password');
+
+  if (!user || !(await user.correctPassword(password, user.password))) {
+    return next(new AppError('Incorrect username or password'), 401);
+  }
+
+  createSendToken(user, 200, req, res);
 });

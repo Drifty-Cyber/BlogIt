@@ -36,10 +36,10 @@ const sendErrorDev = (err, req, res) => {
     });
   }
 
-  return res.status(err.statusCode).render('error', {
-    title: 'Something went wrong',
-    msg: err.message,
-  });
+  // return res.status(err.statusCode).render('error', {
+  //   title: 'Something went wrong',
+  //   msg: err.message,
+  // });
 };
 
 const sendErrorProd = (err, req, res) => {

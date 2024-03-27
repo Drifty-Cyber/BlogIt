@@ -76,6 +76,14 @@ userSchema.pre(/^find/, function (next) {
   next();
 });
 
+// INSTANCE METHOD TO COMPARE PASSWORDS (PASSWORD IN DOCUMENT AND PASSWORD USER PROVIDES TO LOGIN)
+userSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
+
 // Create 'User' model
 const User = mongoose.model('User', userSchema);
 
