@@ -5,19 +5,28 @@ const morgan = require('morgan');
 const globalErrorHandler = require('./controllers/errorController');
 const postsRouter = require('./routes/postsRoutes');
 const userRouter = require('./routes/userRoutes');
+require('./services/passport/config');
 
 // Create App Instance
 const app = express();
 
 // SETTING UP PUG
-app.set('view engine', 'pug');
+// app.set('view engine', 'pug');
 
 // SETTING UP THE VIEWS FOLDER FOR MVC
-app.set('views', path.join(__dirname, 'views'));
+// app.set('views', path.join(__dirname, 'views'));
 
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+// SETUP MORGAN LOGGER
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+// STATIC FILES RENDERING
+app.use(express.static(path.join(__dirname, 'public')));
 
 // EXPRESS MIDDLEWARE - Parse body data
 app.use(express.json({ limit: '10kb' }));
@@ -45,6 +54,10 @@ app.get('/', (req, res, next) => {
     message: 'Welcome',
   });
 });
+
+// app.get('/', (req, res) => {
+//   res.send('<a href="/signup/google">Authenticate with google</a>');
+// });
 
 // Routes
 app.use('/api/v1/posts', postsRouter);
