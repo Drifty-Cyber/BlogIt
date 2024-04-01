@@ -1,5 +1,4 @@
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oidc');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');

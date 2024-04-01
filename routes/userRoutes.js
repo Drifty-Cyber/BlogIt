@@ -7,8 +7,9 @@ const router = express.Router();
 // SignUp Route
 router.route('/signup').post(authController.signup);
 
-router.get('/login', (req, res, next) => {
-  res.render('login');
-});
+// Google Signup/login
+router
+  .route('/signup/google')
+  .get(passport.authenticate('google', { scope: ['email', 'profile'] }));
 
 module.exports = router;

@@ -5,7 +5,6 @@ const morgan = require('morgan');
 const globalErrorHandler = require('./controllers/errorController');
 const postsRouter = require('./routes/postsRoutes');
 const userRouter = require('./routes/userRoutes');
-require('./services/passport/config');
 
 // Create App Instance
 const app = express();
@@ -55,9 +54,9 @@ app.get('/', (req, res, next) => {
   });
 });
 
-// app.get('/', (req, res) => {
-//   res.send('<a href="/signup/google">Authenticate with google</a>');
-// });
+app.get('/google', (req, res, next) => {
+  res.status(200).render('login');
+});
 
 // Routes
 app.use('/api/v1/posts', postsRouter);
