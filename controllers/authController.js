@@ -12,6 +12,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     passwordChangedAt: req.body.passwordChangedAt,
+    // REMEMBER Add "role": "authenticated" field to logged in and signed in users
   });
 
   // SEND WELCOME EMAIL BASED ON ENVIRONMENT
