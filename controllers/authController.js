@@ -13,6 +13,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
     passwordChangedAt: req.body.passwordChangedAt,
     // REMEMBER Add "role": "authenticated" field to logged in and signed in users
+    // Check user model for 'createdAt' field, 'email_confirmed_at' field
   });
 
   // SEND WELCOME EMAIL BASED ON ENVIRONMENT
