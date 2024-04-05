@@ -1,13 +1,23 @@
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
+const passport = require('passport');
 const globalErrorHandler = require('./controllers/errorController');
 const postsRouter = require('./routes/postsRoutes');
 const userRouter = require('./routes/userRoutes');
 
+// Setup Auth for OAuth
+require('./services/passport/googleConfig');
+
 // Create App Instance
 const app = express();
+
+// Passport Initialization
+app.use(session({ secret: process.env.SESSION_SECRET }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // SETTING UP PUG
 // app.set('view engine', 'pug');
@@ -57,6 +67,19 @@ app.get('/', (req, res, next) => {
 app.get('/google', (req, res, next) => {
   res.status(200).render('login');
 });
+
+app.get(
+  '/signup/google',
+  passport.authenticate('google', { scope: ['email', 'profile'] })
+);
+
+app.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    successRedirect: '/',
+    failureRedirect: '/users/authFail',
+  })
+);
 
 // Routes
 app.use('/api/v1/posts', postsRouter);

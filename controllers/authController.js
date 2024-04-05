@@ -1,4 +1,6 @@
 const passport = require('passport');
+const { promisify } = require('util');
+const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -63,3 +65,41 @@ exports.logout = (req, res, next) => {
 exports.loginGoogle = catchAsync(async (req, res, next) => {
   passport.authenticate('google', { scope: ['email', 'profile'] });
 });
+
+exports.isLoggedIn = async (req, res, next) => {
+  if (req.cookies.jwt) {
+    try {
+      // 1) VERIFICATION OF TOKEN
+      const decoded = await promisify(jwt.verify)(
+        req.cookies.jwt,
+        process.env.JWT_SECRET
+      );
+
+      // 2) CHECK IF USER STILL EXISTS
+      const currentUser = await User.findById(decoded.id);
+      if (!currentUser) {
+        return next();
+      }
+
+      // 3) CHECK IF USER CHANGED PASSWORD AFTER TOKEN WAS ISSUED
+      if (currentUser.changedPasswordAfter(decoded.iat)) {
+        return next();
+      }
+
+      //   THERE IS A LOGGED IN USER
+      // PASS LOGGED IN USER TO TEMPLATE ENGINE
+      res.locals.user = currentUser;
+      return next();
+    } catch (err) {
+      return next();
+    }
+  }
+  next();
+};
+
+exports.authFailure = (req, res, next) => {
+  res.status(401).json({
+    status: 'Signin Failed',
+    message: 'Failed to signin. Please try another option.',
+  });
+};
