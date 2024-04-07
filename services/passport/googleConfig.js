@@ -1,6 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const dotenv = require('dotenv');
+const User = require('../../models/userModel');
 
 passport.use(
   new GoogleStrategy(
@@ -12,8 +13,26 @@ passport.use(
       scope: ['email', 'profile'],
     },
 
-    function (request, accessToken, refreshToken, profile, done) {
-      return done(null, profile);
+    async function (request, accessToken, refreshToken, profile, done) {
+      try {
+        // Check if user with the provided email exists in the database
+        let user = await User.findOne({ email: profile.email });
+
+        if (!user) {
+          // If user doesn't exist, create a new account
+          user = new User({
+            email: profile.email,
+            username: profile.given_name, // Use first name as username
+            // You can add more fields here as needed
+          });
+          await user.save();
+        }
+
+        // Log the user in
+        return done(null, user);
+      } catch (error) {
+        return done(error);
+      }
     }
   )
 );
