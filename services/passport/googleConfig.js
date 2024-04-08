@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const dotenv = require('dotenv');
@@ -15,21 +17,20 @@ passport.use(
 
     async function (request, accessToken, refreshToken, profile, done) {
       try {
-        // Check if user with the provided email exists in the database
-        let user = await User.findOne({ email: profile.email });
+        // // Check if user with the provided email exists in the database
+        // let user = await User.findOne({ email: profile.email });
 
-        if (!user) {
-          // If user doesn't exist, create a new account
-          user = new User({
-            email: profile.email,
-            username: profile.given_name, // Use first name as username
-            // You can add more fields here as needed
-          });
-          await user.save();
-        }
+        // if (!user) {
+        //   // If user doesn't exist, create a new account
+        //   user = new User({
+        //     email: profile.email,
+        //     username: profile.given_name, // Use first name as username
+        //   });
+        //   await user.save();
+        // }
 
         // Log the user in
-        return done(null, user);
+        return done(null, profile);
       } catch (error) {
         return done(error);
       }

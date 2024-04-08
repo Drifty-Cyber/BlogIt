@@ -76,7 +76,7 @@ app.get(
 app.get(
   '/google/callback',
   passport.authenticate('google', {
-    successRedirect: '/',
+    successRedirect: '/api/v1/posts',
     failureRedirect: '/users/authFail',
   })
 );
