@@ -29,7 +29,13 @@ passport.use(
         //   await user.save();
         // }
 
+        await User.create({
+          fullName: profile.fullName,
+          username: profile.fullName.split(' ')[0],
+        });
+
         // Log the user in
+
         return done(null, profile);
       } catch (error) {
         return done(error);
