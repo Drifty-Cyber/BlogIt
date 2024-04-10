@@ -17,22 +17,19 @@ passport.use(
 
     async function (request, accessToken, refreshToken, profile, done) {
       try {
-        // // Check if user with the provided email exists in the database
-        // let user = await User.findOne({ email: profile.email });
+        // Check if user with the provided email exists in the database
+        let user = await User.findOne({ email: profile.email });
+        console.log(user);
 
-        // if (!user) {
-        //   // If user doesn't exist, create a new account
-        //   user = new User({
-        //     email: profile.email,
-        //     username: profile.given_name, // Use first name as username
-        //   });
-        //   await user.save();
-        // }
-
-        await User.create({
-          fullName: profile.fullName,
-          username: profile.fullName.split(' ')[0],
-        });
+        if (!user) {
+          // If user doesn't exist, create a new account
+          user = new User({
+            email: profile.email,
+            username: profile.given_name, // Use first name as username
+          });
+          await user.save();
+          console.log(profile);
+        }
 
         // Log the user in
 
